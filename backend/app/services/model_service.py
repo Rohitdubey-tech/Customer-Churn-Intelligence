@@ -40,7 +40,11 @@ class ModelService:
             self.feature_names = joblib.load(feature_names_path)
             
             if os.path.exists(explainer_path):
-                self.explainer = joblib.load(explainer_path)
+                try:
+                    self.explainer = joblib.load(explainer_path)
+                except Exception as ex:
+                    print(f"Notice: Dynamic SHAP explainer object unpickling skipped ({ex}). Pre-computed SHAP matrices will be used.")
+                    self.explainer = None
                 
             with open(metrics_path, 'r') as f:
                 self.metrics = json.load(f)

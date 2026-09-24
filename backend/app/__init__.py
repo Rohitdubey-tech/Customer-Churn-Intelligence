@@ -25,6 +25,22 @@ def create_app(config_class=Config):
     app.register_blueprint(explainability_bp, url_prefix='/api')
     app.register_blueprint(predict_bp, url_prefix='/api')
 
+    @app.route('/')
+    @app.route('/health')
+    def index():
+        return jsonify({
+            "status": "healthy",
+            "service": "Customer Churn Intelligence API",
+            "version": "1.0.0",
+            "endpoints": {
+                "health": "/api/health",
+                "executive_analytics": "/api/analytics/executive",
+                "model_metrics": "/api/model/metrics",
+                "customers": "/api/customers",
+                "predict": "/api/predict"
+            }
+        }), 200
+
     @app.errorhandler(404)
     def not_found(e):
         return jsonify({"error": "NOT_FOUND", "message": "The requested API endpoint does not exist."}), 404
