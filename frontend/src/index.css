@@ -3,21 +3,38 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+    @apply bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-slate-950;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Custom Glassmorphism & Card Styles */
+/* Custom Glassmorphism & UI Micro-animations */
 .glass-panel {
-  @apply bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl shadow-xl;
+  @apply bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl shadow-xl transition-all duration-300;
 }
 
 .glass-card {
-  @apply bg-slate-900/90 border border-slate-800/80 rounded-lg p-5 transition-all duration-200 hover:border-slate-700/80 hover:shadow-2xl hover:shadow-cyan-950/20;
+  @apply bg-slate-900/90 border border-slate-800/80 rounded-xl p-5 transition-all duration-300 ease-out hover:border-slate-700 hover:shadow-xl hover:shadow-cyan-950/20 hover:-translate-y-0.5;
 }
 
+/* Interactive Button Base Styles */
+.btn-primary {
+  @apply px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold text-xs rounded-lg transition-all duration-200 shadow-md shadow-cyan-950/40 hover:shadow-lg hover:shadow-cyan-500/25 active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer border border-cyan-500/30;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 hover:border-slate-600 font-semibold text-xs rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-rose-950/90 hover:bg-rose-900 text-rose-200 border border-rose-800 font-semibold text-xs rounded-lg transition-all duration-200 shadow-sm hover:shadow-rose-950/50 active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer;
+}
+
+/* Scrollbar Customization */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -29,9 +46,10 @@
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #334155;
-  border-radius: 4px;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #0284c7;
 }

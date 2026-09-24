@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RiskBadge from './RiskBadge';
-import { Search, Filter, ArrowUpDown, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ArrowUpDown, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function CustomerTable({
   customers = [],
@@ -24,18 +24,18 @@ export default function CustomerTable({
   const navigate = useNavigate();
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl space-y-4">
+    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl space-y-4 transition-all duration-300">
       {/* Controls Bar: Search & Filters */}
       <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
         {/* Search Box */}
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-cyan-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by Account ID or Company Name..."
-            className="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono"
+            placeholder="Search Account ID or Company Name..."
+            className="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
           />
         </div>
 
@@ -45,7 +45,7 @@ export default function CustomerTable({
           <select
             value={riskFilter}
             onChange={(e) => onRiskChange(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono"
+            className="bg-slate-950 border border-slate-700/80 hover:border-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono transition-colors cursor-pointer"
           >
             <option value="">Risk: ALL</option>
             <option value="CRITICAL">CRITICAL (80-100%)</option>
@@ -58,7 +58,7 @@ export default function CustomerTable({
           <select
             value={segmentFilter}
             onChange={(e) => onSegmentChange(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono"
+            className="bg-slate-950 border border-slate-700/80 hover:border-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono transition-colors cursor-pointer"
           >
             <option value="">Segment: ALL</option>
             <option value="Enterprise">Enterprise</option>
@@ -70,7 +70,7 @@ export default function CustomerTable({
           <select
             value={contractFilter}
             onChange={(e) => onContractChange(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono"
+            className="bg-slate-950 border border-slate-700/80 hover:border-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 focus:ring-1 focus:ring-cyan-500 font-mono transition-colors cursor-pointer"
           >
             <option value="">Contract: ALL</option>
             <option value="Month-to-Month">Month-to-Month</option>
@@ -79,10 +79,10 @@ export default function CustomerTable({
             <option value="3-Year Enterprise">3-Year Enterprise</option>
           </select>
 
-          {/* Sorting */}
+          {/* Sorting Button */}
           <button
             onClick={() => onSortChange(sortBy, order === 'desc' ? 'asc' : 'desc')}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-950 border border-slate-700/80 rounded-lg text-xs font-mono text-slate-300 hover:text-white"
+            className="flex items-center gap-1.5 px-3 py-2 bg-slate-950 border border-slate-700/80 hover:border-cyan-500/60 rounded-lg text-xs font-mono text-slate-300 hover:text-white transition-all duration-200 active:scale-95 cursor-pointer"
           >
             <ArrowUpDown className="w-3.5 h-3.5 text-cyan-400" />
             <span>{sortBy.replace(/_/g, ' ').toUpperCase()} ({order.toUpperCase()})</span>
@@ -122,12 +122,12 @@ export default function CustomerTable({
                   <tr
                     key={cust.account_id}
                     onClick={() => navigate(`/customers/${cust.account_id}`)}
-                    className="hover:bg-slate-850/80 transition cursor-pointer group"
+                    className="hover:bg-slate-800/70 transition-all duration-200 cursor-pointer group"
                   >
-                    <td className="py-3.5 px-4 font-mono font-semibold text-cyan-400">
+                    <td className="py-3.5 px-4 font-mono font-semibold text-cyan-400 group-hover:text-cyan-300">
                       {cust.account_id}
                     </td>
-                    <td className="py-3.5 px-4 font-bold text-white group-hover:text-cyan-300 transition">
+                    <td className="py-3.5 px-4 font-bold text-white group-hover:text-cyan-300 transition-colors">
                       {cust.company_name}
                     </td>
                     <td className="py-3.5 px-4 text-slate-300">
@@ -149,7 +149,7 @@ export default function CustomerTable({
                       <div className="flex items-center gap-2">
                         <div className="w-12 bg-slate-950 h-2 rounded-full overflow-hidden">
                           <div
-                            className={`h-full ${
+                            className={`h-full transition-all duration-500 ${
                               cust.churn_probability > 0.6 ? 'bg-rose-500' : cust.churn_probability > 0.3 ? 'bg-amber-500' : 'bg-emerald-500'
                             }`}
                             style={{ width: `${probPct}%` }}
@@ -167,7 +167,7 @@ export default function CustomerTable({
                           e.stopPropagation();
                           navigate(`/customers/${cust.account_id}`);
                         }}
-                        className="px-3 py-1 bg-cyan-950 hover:bg-cyan-900 border border-cyan-800 text-cyan-400 text-[11px] font-mono rounded-lg transition inline-flex items-center gap-1"
+                        className="px-3 py-1 bg-cyan-950 hover:bg-cyan-900 border border-cyan-800/80 hover:border-cyan-500 text-cyan-400 text-[11px] font-mono rounded-lg transition-all duration-200 active:scale-95 inline-flex items-center gap-1 cursor-pointer shadow-sm hover:shadow-cyan-950/50"
                       >
                         Explain <ExternalLink className="w-3 h-3" />
                       </button>
@@ -183,14 +183,14 @@ export default function CustomerTable({
       {/* Pagination Bar */}
       <div className="p-4 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
         <span>
-          Showing page <strong>{currentPage}</strong> of <strong>{totalPages}</strong> ({totalRecords} records)
+          Showing page <strong className="text-white">{currentPage}</strong> of <strong className="text-white">{totalPages}</strong> ({totalRecords} records)
         </span>
 
         <div className="flex items-center gap-2">
           <button
             disabled={currentPage <= 1}
             onClick={() => onPageChange(currentPage - 1)}
-            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-95 cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -200,7 +200,7 @@ export default function CustomerTable({
           <button
             disabled={currentPage >= totalPages}
             onClick={() => onPageChange(currentPage + 1)}
-            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-95 cursor-pointer"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
