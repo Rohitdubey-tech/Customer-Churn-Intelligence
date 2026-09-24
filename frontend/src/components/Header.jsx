@@ -72,11 +72,11 @@ export default function Header({ searchVal, onSearchChange }) {
         <div className="p-1.5 bg-churnly-600 rounded-lg text-white group-hover:bg-churnly-700 transition-colors shadow-sm">
           <Flower2 className="w-5 h-5" />
         </div>
-        <span className="text-xl font-extrabold text-churnly-600 tracking-tight">Churnly</span>
+        <span className="text-lg font-extrabold text-churnly-600 tracking-tight">Customer Churn Intelligence</span>
       </div>
 
       {/* Center Search Input with Instant Dropdown */}
-      <div ref={searchRef} className="flex-1 max-w-xl mx-8 relative">
+      <div ref={searchRef} className="flex-1 max-w-xl mx-6 relative">
         <div className="relative">
           <input
             type="text"
@@ -192,24 +192,24 @@ export default function Header({ searchVal, onSearchChange }) {
             <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 text-xs space-y-1">
               <div className="px-3 py-2 border-b border-slate-100">
                 <p className="font-bold text-slate-800">Adam Baker</p>
-                <p className="text-[11px] text-slate-400">adam.baker@churnly.ai</p>
+                <p className="text-[11px] text-slate-400">adam.baker@churnintelligence.ai</p>
               </div>
               <button
                 onClick={() => { setShowUserMenu(false); navigate('/customers'); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
               >
                 <User className="w-3.5 h-3.5 text-slate-400" />
-                <span>Account Profile</span>
+                <span>Account Directory</span>
               </button>
               <button
                 onClick={() => { setShowUserMenu(false); navigate('/model'); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
               >
                 <Shield className="w-3.5 h-3.5 text-slate-400" />
-                <span>Model Settings</span>
+                <span>Model Metrics</span>
               </button>
               <button
-                onClick={() => { setShowUserMenu(false); alert("Notification Preferences updated!"); }}
+                onClick={() => { setShowUserMenu(false); alert("Preferences saved."); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
               >
                 <Settings className="w-3.5 h-3.5 text-slate-400" />
@@ -228,9 +228,9 @@ export default function Header({ searchVal, onSearchChange }) {
           )}
         </div>
 
-        {/* Far Right Solid Red Lifebuoy Action Block */}
+        {/* Far Right Solid Red Action Block */}
         <div 
-          onClick={() => alert("Help Desk & XAI Support Documentation opened.")}
+          onClick={() => alert("Customer Churn Intelligence Support & XAI Documentation opened.")}
           className="h-16 w-14 bg-churnly-600 flex items-center justify-center -mr-6 hover:bg-churnly-700 transition-colors cursor-pointer text-white shadow-sm"
           title="Support & Documentation"
         >

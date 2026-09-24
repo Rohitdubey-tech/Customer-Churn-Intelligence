@@ -5,7 +5,7 @@
 
 ## 1. 30-Second Elevator Pitch
 
-> *"I built **Churnly**, an end-to-end Explainable AI (XAI) product for enterprise SaaS customer churn prediction. Instead of outputting a black-box churn score, it uses **LightGBM gradient boosting** paired with **SHAP TreeExplainer** to break down exactly **WHY** a specific account is predicted to churn. The platform features a React.js and Tailwind CSS dashboard displaying interactive SHAP force plots, population-wide feature attributions, non-linear dependence plots, held-out model performance metrics (80.67% Accuracy, 76.2% F1, 0.7310 ROC-AUC), and a batch CSV scoring engine backed by a Flask REST API."*
+> *"I built **Customer Churn Intelligence**, an end-to-end Explainable AI (XAI) product for enterprise SaaS customer churn prediction. Instead of outputting a black-box churn score, it uses **LightGBM gradient boosting** paired with **SHAP TreeExplainer** to break down exactly **WHY** a specific account is predicted to churn. The platform features a React.js and Tailwind CSS dashboard displaying interactive SHAP force plots, population-wide feature attributions, non-linear dependence plots, held-out model performance metrics (80.67% Accuracy, 76.2% F1, 0.7310 ROC-AUC), and a batch CSV scoring engine backed by a Flask REST API."*
 
 ---
 
@@ -15,7 +15,7 @@
 In B2B enterprise SaaS, account churn leads to severe revenue loss (ARR degradation). Traditional ML models act as black boxes—they output a probability score (e.g., *85% churn risk*) but give Customer Success Managers (CSMs) no actionable visibility into **which operational factors** triggered that prediction.
 
 ### The Solution
-**Churnly** bridges the gap between machine learning predictions and executive decision-making by introducing two levels of explainability:
+**Customer Churn Intelligence** bridges the gap between machine learning predictions and executive decision-making by introducing two levels of explainability:
 1. **Local Account Explainability:** Displays exact feature attributions (+SHAP factors increasing churn risk vs -SHAP factors stabilizing retention) using interactive force plots.
 2. **Global Portfolio Explainability:** Aggregates tree paths across all accounts to show top churn drivers and non-linear feature threshold behaviors across the enterprise portfolio.
 
@@ -83,7 +83,7 @@ In B2B enterprise SaaS, account churn leads to severe revenue loss (ARR degradat
 | :--- | :--- | :--- |
 | **1** | **Executive Overview (`/`)** | Point out the top KPIs: Total Accounts, Predicted Churners, Overall Churn Rate %, and Revenue at Risk ($ ARR). Show the Risk Distribution pie chart and Segment/Contract churn breakdowns. |
 | **2** | **Customer Explorer (`/customers`)** | Show the interactive table. Type `AC-1001` or `Apex` into the search bar, filter by `CRITICAL` risk level, and click an account row. |
-| **3** | **Account Profile & SHAP Force Plot (`/customers/:id`)** | Walk through the **Churnly** profile layout: Red Hero Churn Box (85% score), Historical Churn line chart, 3 Red Semi-Circle Gauges (Login 66%, Payments 74%, Renewals 94%), and the **SHAP Force Plot** showing +SHAP risk factors vs -SHAP retention factors. |
+| **3** | **Account Profile & SHAP Force Plot (`/customers/:id`)** | Walk through the **Customer Churn Intelligence** profile layout: Red Hero Churn Box (85% score), Historical Churn line chart, 3 Red Semi-Circle Gauges (Login 66%, Payments 74%, Renewals 94%), and the **SHAP Force Plot** showing +SHAP risk factors vs -SHAP retention factors. |
 | **4** | **Global Model Explanation (`/explainability`)** | Show the population-wide SHAP bar chart, beeswarm scatter distribution, and select features (e.g. `nps_score`) in the Feature Dependence Plot. |
 | **5** | **Model Performance (`/model`)** | Highlight the empirical validation metrics (Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC), Confusion Matrix heatmap, and ROC/PR curves evaluated on held-out test data. |
 | **6** | **Batch Prediction (`/batch`)** | Demonstrate downloading the sample CSV template, uploading a CSV file, running batch predictions, and exporting scored CSV results. |
