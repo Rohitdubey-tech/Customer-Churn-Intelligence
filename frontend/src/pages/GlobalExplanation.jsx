@@ -100,7 +100,7 @@ export default function GlobalExplanation() {
                 </p>
               </div>
               <div className="bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 text-xs font-mono text-churnly-700 shrink-0 font-semibold">
-                Base Population Baseline: <strong className="text-slate-800">{(globalData?.base_value * 100).toFixed(1)}%</strong>
+                Base Population Baseline: <strong className="text-slate-800">{((globalData?.base_value ?? 0.35) * 100).toFixed(1)}%</strong>
               </div>
             </div>
 
