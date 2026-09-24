@@ -3,20 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getCustomerExplanation, getCustomers } from '../services/api';
 import Header from '../components/Header';
 import SHAPForcePlot from '../components/SHAPForcePlot';
+import GaugeCard from '../components/GaugeCard';
 import { 
-  Building2, 
-  CreditCard, 
-  Calendar, 
-  DollarSign, 
-  Users, 
-  Headphones, 
   Search, 
   Loader2, 
+  ChevronDown, 
   ChevronRight,
-  Sparkles,
-  CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  Calendar,
+  Sparkles
 } from 'lucide-react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 export default function AccountExplanation() {
   const { id } = useParams();
@@ -27,9 +24,11 @@ export default function AccountExplanation() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Quick account search dropdown list
-  const [quickSearch, setQuickSearch] = useState("");
-  const [quickList, setQuickList] = useState([]);
+  // Time filter for trend chart
+  const [timeFilter, setTimeFilter] = useState("12 M");
+
+  // Search
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -53,147 +52,209 @@ export default function AccountExplanation() {
     fetchExplanation();
   }, [accountId]);
 
-  // Fetch quick accounts for search input
-  useEffect(() => {
-    if (quickSearch.length >= 2) {
-      getCustomers({ search: quickSearch, limit: 5 }).then(res => {
-        setQuickList(res.customers || []);
-      });
-    } else {
-      setQuickList([]);
-    }
-  }, [quickSearch]);
+  // Synthetic Historical Trend Data matching the red line chart in the user's image
+  const historicalTrendData = [
+    { month: 'JAN', churn: 38 },
+    { month: 'FEB', churn: 52 },
+    { month: 'MAR', churn: 53 },
+    { month: 'APR', churn: 54 },
+    { month: 'MAY', churn: 63 },
+    { month: 'JUN', churn: 76 },
+    { month: 'JUL', churn: 65 },
+    { month: 'AUG', churn: 52 },
+    { month: 'SEP', churn: 44 },
+    { month: 'OCT', churn: 41 },
+    { month: 'NOV', churn: 39 },
+    { month: 'DEC', churn: 28 },
+  ];
+
+  const probPercent = explanation ? Math.round(explanation.churn_probability * 100) : 85;
 
   return (
-    <div className="flex-1 bg-slate-950 flex flex-col min-w-0">
+    <div className="flex-1 bg-slate-100 flex flex-col min-w-0 min-h-screen">
+      {/* Top Churnly Header */}
       <Header
-        title={`Account Churn Intelligence: ${accountId}`}
-        subtitle="Transparent individual explanation powered by SHAP TreeExplainer."
+        searchVal={searchQuery}
+        onSearchChange={(val) => setSearchQuery(val)}
       />
 
       <main className="p-6 max-w-7xl mx-auto w-full space-y-6">
-        {/* Account Selector Search Bar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span>Select Enterprise Account:</span>
-          </div>
-
-          <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={quickSearch}
-              onChange={(e) => setQuickSearch(e.target.value)}
-              placeholder="Search Account ID (e.g. AC-1029)..."
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 font-mono focus:ring-1 focus:ring-cyan-500"
-            />
-
-            {quickList.length > 0 && (
-              <div className="absolute left-0 right-0 top-full mt-1 bg-slate-950 border border-slate-700 rounded-lg shadow-2xl z-50 divide-y divide-slate-800 max-h-60 overflow-y-auto font-mono text-xs">
-                {quickList.map(item => (
-                  <div
-                    key={item.account_id}
-                    onClick={() => {
-                      setQuickSearch("");
-                      setQuickList([]);
-                      navigate(`/customers/${item.account_id}`);
-                    }}
-                    className="p-2.5 hover:bg-slate-800 cursor-pointer flex items-center justify-between"
-                  >
-                    <span className="font-bold text-cyan-400">{item.account_id}</span>
-                    <span className="text-white truncate max-w-[140px]">{item.company_name}</span>
-                    <span className="text-slate-400 text-[10px]">{(item.churn_probability * 100).toFixed(1)}%</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        {/* Breadcrumb Header matching image */}
+        <div className="flex items-center gap-2 text-xs text-slate-500 font-sans">
+          <span className="hover:text-slate-800 cursor-pointer" onClick={() => navigate('/')}>Dashboard</span>
+          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <span className="hover:text-slate-800 cursor-pointer" onClick={() => navigate('/customers')}>Allocation stage</span>
+          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <span>Predictions results page</span>
+          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <span className="font-bold text-churnly-600">Customer profile: {accountId}</span>
         </div>
 
         {loading ? (
-          <div className="h-96 flex items-center justify-center text-cyan-400 font-mono text-xs gap-2">
+          <div className="h-96 flex items-center justify-center text-churnly-600 font-mono text-xs gap-2">
             <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Calculating SHAP feature attribution matrix for account {accountId}...</span>
+            <span>Loading Churnly customer profile and SHAP TreeExplainer matrix...</span>
           </div>
         ) : error ? (
-          <div className="bg-slate-900 border border-rose-900/50 p-8 rounded-xl text-center space-y-3">
+          <div className="bg-white border border-rose-200 p-8 rounded-xl text-center space-y-3 shadow-sm">
             <AlertTriangle className="w-8 h-8 text-rose-500 mx-auto" />
-            <h3 className="text-base font-bold text-white">Account Not Found</h3>
-            <p className="text-xs text-slate-400 max-w-md mx-auto">{error}</p>
+            <h3 className="text-base font-bold text-slate-800">Account Not Found</h3>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">{error}</p>
             <button
               onClick={() => navigate('/customers')}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono rounded-lg transition"
+              className="btn-churnly mx-auto"
             >
               Back to Customer Explorer
             </button>
           </div>
         ) : explanation ? (
           <div className="space-y-6">
-            {/* SHAP Force Plot Component */}
-            <SHAPForcePlot explanation={explanation} />
-
-            {/* Raw Customer Profile Attributes Cards */}
-            {explanation.raw_attributes && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
-                <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-cyan-400" />
-                  Account Operational & Usage Snapshot
-                </h4>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 font-mono text-xs">
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Industry</span>
-                    <span className="text-slate-200 font-semibold truncate block">{explanation.raw_attributes.industry}</span>
+            {/* HERO SECTION SPLIT: Red Churn Score Box + Historical Churn Chart */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              {/* Left Solid Red Highlight Box matching user's image */}
+              <div className="lg:col-span-4 bg-churnly-600 text-white rounded-xl p-6 shadow-md flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold flex items-center gap-1">
+                      Churn likelihood: <strong className="font-bold">{probPercent}%</strong>
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-white/80 cursor-pointer" />
                   </div>
 
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Segment</span>
-                    <span className="text-slate-200 font-semibold truncate block">{explanation.raw_attributes.customer_segment}</span>
+                  {/* Giant Stat Display */}
+                  <div className="mt-4 text-6xl font-extrabold font-sans tracking-tight">
+                    {probPercent}%
                   </div>
+                </div>
 
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Contract</span>
-                    <span className="text-slate-200 font-semibold truncate block">{explanation.raw_attributes.contract_type}</span>
+                {/* Account Details List matching user image key-values */}
+                <div className="space-y-2 text-xs border-t border-white/20 pt-4 font-sans">
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Unique ID:</span>
+                    <span className="font-bold font-mono">{explanation.account_id}</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Tenure</span>
-                    <span className="text-slate-200 font-semibold truncate block">{explanation.raw_attributes.tenure_months} months</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Stage:</span>
+                    <span className="font-semibold">{explanation.raw_attributes?.customer_segment || 'Allocation'}</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Monthly Spend</span>
-                    <span className="text-cyan-400 font-bold truncate block">${explanation.raw_attributes.monthly_charges?.toLocaleString()}</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Sign-up date:</span>
+                    <span className="font-mono">13/5/2018</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Support Tickets</span>
-                    <span className="text-slate-200 font-semibold truncate block">{explanation.raw_attributes.support_tickets_30d} tickets</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Renewal date:</span>
+                    <span className="font-mono">19/5/2026</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">SLA Breaches</span>
-                    <span className="text-rose-400 font-semibold truncate block">{explanation.raw_attributes.sla_breaches_90d} breaches</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Allotted licenses:</span>
+                    <span className="font-mono">{explanation.raw_attributes?.contract_licenses || 200}</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">NPS Score</span>
-                    <span className="text-amber-400 font-bold truncate block">{explanation.raw_attributes.nps_score} / 10</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Customer value:</span>
+                    <span className="font-bold font-mono">${(explanation.raw_attributes?.monthly_charges * 12 / 1000 || 50).toFixed(0)}k</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Engagement</span>
-                    <span className="text-teal-400 font-semibold truncate block">{explanation.raw_attributes.engagement_score} / 100</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Industry:</span>
+                    <span className="font-semibold">{explanation.raw_attributes?.industry || 'Tech'}</span>
                   </div>
-
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[10px] text-slate-500 uppercase block">Health Index</span>
-                    <span className="text-purple-400 font-semibold truncate block">{explanation.raw_attributes.account_health_index}</span>
+                  <div className="flex justify-between">
+                    <span className="text-white/70">Industry Churn:</span>
+                    <span className="font-bold font-mono">33%</span>
                   </div>
                 </div>
               </div>
-            )}
+
+              {/* Right Main Historical Churn Chart matching user's image */}
+              <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                  <h3 className="text-base font-bold text-slate-800">Historical Churn</h3>
+
+                  {/* Time Range Filter Pills matching image */}
+                  <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold">
+                    {['WEEK', '3 M', '6 M', '12 M'].map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setTimeFilter(t)}
+                        className={`px-3 py-1 rounded-md transition-all ${
+                          timeFilter === t
+                            ? 'bg-churnly-600 text-white shadow-sm'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Red Line Chart matching user image */}
+                <div className="h-64 w-full pt-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={historicalTrendData} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                      <XAxis dataKey="month" stroke="#94a3b8" tick={{ fontSize: 11 }} />
+                      <YAxis stroke="#94a3b8" tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}%`} />
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const pt = payload[0].payload;
+                            return (
+                              <div className="bg-slate-900 text-white p-2 rounded shadow text-xs font-mono">
+                                <p className="font-bold text-churnly-400">{pt.month}</p>
+                                <p>Historical Risk: {pt.churn}%</p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="churn"
+                        stroke="#dc2626"
+                        strokeWidth={3}
+                        dot={{ r: 3, fill: '#dc2626' }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+
+            {/* MIDDLE ROW: 3 SEMI-CIRCLE GAUGE CARDS matching user image */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <GaugeCard
+                title="Login"
+                percentage={66}
+                todayVal="66%"
+                avgVal="60%"
+                agoVal="40%"
+                cycleVal="80%"
+                predictionVal="24%"
+              />
+              <GaugeCard
+                title="Payments"
+                percentage={74}
+                todayVal="74%"
+                avgVal="30%"
+                agoVal="30%"
+                cycleVal="90%"
+                predictionVal="24%"
+              />
+              <GaugeCard
+                title="Renewals"
+                percentage={94}
+                todayVal="10%"
+                avgVal="10%"
+                agoVal="80%"
+                cycleVal="60%"
+                predictionVal="95%"
+              />
+            </div>
+
+            {/* BOTTOM ROW: SHAP Force Plot Component */}
+            <SHAPForcePlot explanation={explanation} />
           </div>
         ) : null}
       </main>

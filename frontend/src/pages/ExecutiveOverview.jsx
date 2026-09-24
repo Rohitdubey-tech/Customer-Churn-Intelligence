@@ -46,9 +46,9 @@ export default function ExecutiveOverview() {
 
   if (loading) {
     return (
-      <div className="flex-1 bg-slate-950 flex items-center justify-center min-h-screen text-cyan-400 font-mono text-sm gap-3">
+      <div className="flex-1 bg-slate-100 flex items-center justify-center min-h-screen text-churnly-600 font-mono text-xs gap-3">
         <Loader2 className="w-6 h-6 animate-spin" />
-        <span>Loading Executive Churn Intelligence Dashboard...</span>
+        <span>Loading Churnly Executive Intelligence Dashboard...</span>
       </div>
     );
   }
@@ -59,24 +59,28 @@ export default function ExecutiveOverview() {
     LOW: '#10b981',
     MEDIUM: '#f59e0b',
     HIGH: '#f97316',
-    CRITICAL: '#ef4444'
+    CRITICAL: '#dc2626'
   };
 
   const riskPieData = data.risk_distribution.map(r => ({
     name: r.risk_level,
     value: r.count,
     percentage: r.percentage,
-    color: RISK_COLORS[r.risk_level] || '#06b6d4'
+    color: RISK_COLORS[r.risk_level] || '#dc2626'
   }));
 
   return (
-    <div className="flex-1 bg-slate-950 flex flex-col min-w-0">
-      <Header
-        title="Customer Churn Intelligence"
-        subtitle="Predict, understand, and act on account churn risk."
-      />
+    <div className="flex-1 bg-slate-100 flex flex-col min-w-0 min-h-screen">
+      <Header />
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800 tracking-tight">Executive Churn Overview</h2>
+            <p className="text-xs text-slate-500">Predict, understand, and act on account churn risk across your portfolio.</p>
+          </div>
+        </div>
+
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           <MetricCard
@@ -89,7 +93,7 @@ export default function ExecutiveOverview() {
           <MetricCard
             title="Predicted Churners"
             value={data.predicted_churners?.toLocaleString()}
-            subtitle="High Churn Probability"
+            subtitle="High Churn Risk"
             icon={AlertTriangle}
             color="rose"
           />
@@ -123,13 +127,12 @@ export default function ExecutiveOverview() {
           />
         </div>
 
-        {/* Charts Row 1: Risk Category Distribution & Churn by Customer Segment */}
+        {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Risk Category Distribution */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-cyan-400" />
-              Account Risk Distribution Breakdown
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <PieIcon className="w-4 h-4 text-churnly-600" />
+              Account Risk Category Distribution
             </h3>
             <div className="h-64 w-full flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
@@ -144,7 +147,7 @@ export default function ExecutiveOverview() {
                     dataKey="value"
                   >
                     {riskPieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} stroke="#0f172a" strokeWidth={2} />
+                      <Cell key={`cell-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip
@@ -152,9 +155,9 @@ export default function ExecutiveOverview() {
                       if (active && payload && payload.length) {
                         const pt = payload[0].payload;
                         return (
-                          <div className="bg-slate-950 border border-slate-700 p-2.5 rounded text-xs font-mono">
-                            <p className="font-bold text-white">{pt.name} RISK</p>
-                            <p className="text-slate-300">{pt.value} Accounts ({pt.percentage}%)</p>
+                          <div className="bg-slate-900 text-white p-2.5 rounded text-xs font-mono shadow-md">
+                            <p className="font-bold">{pt.name} RISK</p>
+                            <p>{pt.value} Accounts ({pt.percentage}%)</p>
                           </div>
                         );
                       }
@@ -164,117 +167,46 @@ export default function ExecutiveOverview() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-800 text-xs font-mono">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100 text-xs font-mono">
               {riskPieData.map(r => (
-                <div key={r.name} className="flex items-center gap-2 bg-slate-950 p-2 rounded border border-slate-800">
+                <div key={r.name} className="flex items-center gap-2 bg-slate-50 p-2 rounded border border-slate-200">
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: r.color }}></span>
                   <div>
-                    <span className="text-slate-400 block text-[10px]">{r.name}</span>
-                    <span className="text-white font-bold">{r.value}</span>
+                    <span className="text-slate-500 block text-[10px]">{r.name}</span>
+                    <span className="text-slate-800 font-bold">{r.value}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Churn Rate by Customer Segment */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-cyan-400" />
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
+            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-churnly-600" />
               Predicted Churn Rate by Customer Segment
             </h3>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.segment_breakdown} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="segment" stroke="#94a3b8" tick={{ fontSize: 11 }} />
-                  <YAxis stroke="#94a3b8" tick={{ fontSize: 11 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                  <XAxis dataKey="segment" stroke="#64748b" tick={{ fontSize: 11 }} />
+                  <YAxis stroke="#64748b" tick={{ fontSize: 11 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
                   <Tooltip
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         const pt = payload[0].payload;
                         return (
-                          <div className="bg-slate-950 border border-slate-700 p-3 rounded text-xs font-mono">
-                            <p className="font-bold text-white">{pt.segment}</p>
-                            <p className="text-cyan-400">Churn Rate: {(pt.churn_rate * 100).toFixed(1)}%</p>
-                            <p className="text-slate-400">Total Accounts: {pt.total_accounts}</p>
-                            <p className="text-rose-400">Predicted Churners: {pt.predicted_churn}</p>
+                          <div className="bg-slate-900 text-white p-3 rounded text-xs font-mono shadow-md">
+                            <p className="font-bold">{pt.segment}</p>
+                            <p className="text-churnly-400">Churn Rate: {(pt.churn_rate * 100).toFixed(1)}%</p>
+                            <p className="text-slate-300">Total Accounts: {pt.total_accounts}</p>
                           </div>
                         );
                       }
                       return null;
                     }}
                   />
-                  <Bar dataKey="churn_rate" fill="#06b6d4" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-
-        {/* Charts Row 2: Churn by Contract Type & Churn by Industry */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Churn by Contract Type */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <FileText className="w-4 h-4 text-purple-400" />
-              Churn Rate by Contract Commitment
-            </h3>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.contract_breakdown} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="contract_type" stroke="#94a3b8" tick={{ fontSize: 10 }} />
-                  <YAxis stroke="#94a3b8" tick={{ fontSize: 11 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
-                  <Tooltip
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        const pt = payload[0].payload;
-                        return (
-                          <div className="bg-slate-950 border border-slate-700 p-3 rounded text-xs font-mono">
-                            <p className="font-bold text-white">{pt.contract_type}</p>
-                            <p className="text-purple-400">Churn Rate: {(pt.churn_rate * 100).toFixed(1)}%</p>
-                            <p className="text-slate-400">Accounts: {pt.total_accounts}</p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Bar dataKey="churn_rate" fill="#a855f7" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Churn by Industry */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-emerald-400" />
-              Industry Vertical Churn Index
-            </h3>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.industry_breakdown} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="industry" stroke="#94a3b8" tick={{ fontSize: 10 }} />
-                  <YAxis stroke="#94a3b8" tick={{ fontSize: 11 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
-                  <Tooltip
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        const pt = payload[0].payload;
-                        return (
-                          <div className="bg-slate-950 border border-slate-700 p-3 rounded text-xs font-mono">
-                            <p className="font-bold text-white">{pt.industry}</p>
-                            <p className="text-emerald-400">Churn Rate: {(pt.churn_rate * 100).toFixed(1)}%</p>
-                            <p className="text-slate-400">Accounts: {pt.total_accounts}</p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Bar dataKey="churn_rate" fill="#10b981" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="churn_rate" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
