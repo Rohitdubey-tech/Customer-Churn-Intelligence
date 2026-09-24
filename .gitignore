@@ -1,0 +1,17 @@
+# Python / Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+backend/venv/
+.pytest_cache/
+
+# Frontend Node / Vite
+node_modules/
+frontend/dist/
+frontend/node_modules/
+.DS_Store
+
+# Temporary uploads & logs
+backend/uploads/
+*.log
+.env
