@@ -18,24 +18,24 @@ export default function MetricCard({ title, value, subtitle, icon: Icon, trend, 
   };
 
   return (
-    <div className={`group relative overflow-hidden bg-slate-900/90 border border-slate-800 rounded-xl p-5 bg-gradient-to-br ${getColorClasses()} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-700 shadow-lg`}>
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-slate-300 transition-colors">{title}</span>
+    <div className={`group relative overflow-hidden bg-white border border-slate-200 rounded-xl p-4 sm:p-5 bg-gradient-to-br ${getColorClasses()} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 shadow-sm flex flex-col justify-between`}>
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-700 transition-colors truncate">{title}</span>
         {Icon && (
-          <div className="p-2.5 rounded-lg bg-slate-800/80 border border-slate-700/50 group-hover:scale-110 transition-transform duration-300">
-            <Icon className="w-5 h-5" />
+          <div className="p-2 rounded-lg bg-slate-100 border border-slate-200 shrink-0 group-hover:scale-105 transition-transform">
+            <Icon className="w-4 h-4 text-churnly-600" />
           </div>
         )}
       </div>
-      <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-2xl lg:text-3xl font-bold tracking-tight text-white font-mono">{value}</span>
+      <div className="mt-3 flex items-baseline gap-1.5 flex-wrap overflow-hidden">
+        <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-800 font-mono truncate">{value}</span>
         {trend && (
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${trend.positive ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-rose-950 text-rose-400 border border-rose-800'}`}>
+          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${trend.positive ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-rose-100 text-rose-800 border border-rose-300'}`}>
             {trend.value}
           </span>
         )}
       </div>
-      {subtitle && <p className="mt-1.5 text-xs text-slate-400">{subtitle}</p>}
+      {subtitle && <p className="mt-1.5 text-[11px] text-slate-400 truncate">{subtitle}</p>}
     </div>
   );
 }

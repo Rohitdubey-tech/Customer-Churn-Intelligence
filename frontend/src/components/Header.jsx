@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ChevronDown, LifeBuoy, Flower2, User, Settings, LogOut, Shield, UploadCloud, Database } from 'lucide-react';
+import { Search, ChevronDown, LifeBuoy, Flower2, User, Settings, LogOut, Shield, UploadCloud } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getCustomers } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 export default function Header({ searchVal, onSearchChange }) {
   const navigate = useNavigate();
-  const { user, isDemo, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   // Interactive Search State
   const [internalSearch, setInternalSearch] = useState(searchVal || "");
@@ -74,22 +74,18 @@ export default function Header({ searchVal, onSearchChange }) {
       {/* Left Logo */}
       <div 
         onClick={() => navigate('/')} 
-        className="flex items-center gap-2.5 cursor-pointer group"
+        className="flex items-center gap-2.5 cursor-pointer shrink-0 group"
       >
         <div className="p-1.5 bg-churnly-600 rounded-lg text-white group-hover:bg-churnly-700 transition-colors shadow-sm">
           <Flower2 className="w-5 h-5" />
         </div>
-        <span className="text-lg font-extrabold text-churnly-600 tracking-tight">Customer Churn Intelligence</span>
-      </div>
-
-      {/* Mode Badge (Demo Data vs Custom Data) */}
-      <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200 text-xs font-mono">
-        <span className={`w-2 h-2 rounded-full ${isDemo ? 'bg-amber-500 animate-pulse' : 'bg-cyan-500'}`}></span>
-        <span className="text-slate-700 font-semibold">{isDemo ? 'DEMO MODE (Sample Data)' : 'CUSTOM WORKSPACE'}</span>
+        <span className="text-base font-extrabold text-churnly-600 tracking-tight whitespace-nowrap">
+          Customer Churn Intelligence
+        </span>
       </div>
 
       {/* Center Search Input with Instant Dropdown */}
-      <div ref={searchRef} className="flex-1 max-w-md mx-4 relative">
+      <div ref={searchRef} className="flex-1 max-w-xs sm:max-w-sm md:max-w-md mx-4 relative">
         <div className="relative">
           <input
             type="text"
@@ -102,15 +98,15 @@ export default function Header({ searchVal, onSearchChange }) {
             onFocus={() => {
               if (searchResults.length > 0) setShowDropdown(true);
             }}
-            placeholder="Search account ID or company name..."
-            className="w-full bg-slate-100/80 border border-slate-200 rounded-xl pl-4 pr-10 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-churnly-500 focus:ring-1 focus:ring-churnly-500/50 transition-all font-sans"
+            placeholder="Search account ID or company..."
+            className="w-full bg-slate-100/80 border border-slate-200 rounded-xl pl-4 pr-10 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-churnly-500 focus:ring-1 focus:ring-churnly-500/50 transition-all font-sans"
           />
           <Search 
             onClick={() => {
               const query = onSearchChange ? searchVal : internalSearch;
               if (query) navigate(`/customers?search=${encodeURIComponent(query)}`);
             }}
-            className="w-4 h-4 text-churnly-600 absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform" 
+            className="w-4 h-4 text-churnly-600 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform" 
           />
         </div>
 
@@ -127,16 +123,15 @@ export default function Header({ searchVal, onSearchChange }) {
                   setShowDropdown(false);
                   navigate(`/customers/${item.account_id}`);
                 }}
-                className="p-3 hover:bg-slate-50 cursor-pointer flex items-center justify-between transition-colors"
+                className="p-2.5 hover:bg-slate-50 cursor-pointer flex items-center justify-between transition-colors"
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <span className="font-mono font-bold text-churnly-600 bg-churnly-50 px-1.5 py-0.5 rounded border border-churnly-100">
                     {item.account_id}
                   </span>
-                  <span className="font-semibold text-slate-800">{item.company_name}</span>
+                  <span className="font-semibold text-slate-800 truncate max-w-[120px]">{item.company_name}</span>
                 </div>
-                <div className="flex items-center gap-3 font-mono text-[11px]">
-                  <span className="text-slate-400">{item.customer_segment}</span>
+                <div className="flex items-center gap-2 font-mono text-[11px] shrink-0">
                   <span className="font-bold text-churnly-600">{(item.churn_probability * 100).toFixed(1)}% risk</span>
                 </div>
               </div>
@@ -146,7 +141,7 @@ export default function Header({ searchVal, onSearchChange }) {
       </div>
 
       {/* Right Actions & User Profile */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 shrink-0">
         {/* CSM Role Dropdown Menu */}
         <div ref={roleRef} className="relative">
           <button
@@ -185,28 +180,25 @@ export default function Header({ searchVal, onSearchChange }) {
         <div ref={userRef} className="relative">
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2.5 hover:bg-slate-50 p-1.5 rounded-xl transition-colors cursor-pointer text-left"
+            className="flex items-center gap-2 hover:bg-slate-50 p-1.5 rounded-xl transition-colors cursor-pointer text-left"
           >
-            <div className="w-8 h-8 rounded-full bg-churnly-600 text-white font-bold text-xs flex items-center justify-center border border-churnly-500 shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-churnly-600 text-white font-bold text-xs flex items-center justify-center border border-churnly-500 shadow-sm shrink-0">
               {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
             </div>
             <div className="hidden sm:block">
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-slate-800">{user?.name || 'User'}</span>
+                <span className="text-xs font-bold text-slate-800 truncate max-w-[110px]">{user?.name || 'User'}</span>
                 <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
               </div>
-              <span className="text-[9px] text-slate-400 font-mono block">{user?.email || 'user@churnintelligence.ai'}</span>
+              <span className="text-[9px] text-slate-400 font-mono block truncate max-w-[120px]">{user?.email || 'user@churnintelligence.ai'}</span>
             </div>
           </button>
 
           {showUserMenu && (
-            <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 text-xs space-y-1">
+            <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 text-xs space-y-1">
               <div className="px-3 py-2 border-b border-slate-100">
                 <p className="font-bold text-slate-800">{user?.name || 'User'}</p>
                 <p className="text-[11px] text-slate-400 font-mono truncate">{user?.email}</p>
-                <span className="mt-1 inline-block text-[9px] font-bold uppercase font-mono px-2 py-0.5 rounded bg-churnly-50 text-churnly-700 border border-churnly-200">
-                  {isDemo ? 'Demo Mode' : 'Custom Email Workspace'}
-                </span>
               </div>
               <button
                 onClick={() => { setShowUserMenu(false); navigate('/batch'); }}
@@ -238,7 +230,7 @@ export default function Header({ searchVal, onSearchChange }) {
         {/* Far Right Solid Red Action Block */}
         <div 
           onClick={() => alert("Customer Churn Intelligence Support & XAI Documentation opened.")}
-          className="h-16 w-14 bg-churnly-600 flex items-center justify-center -mr-6 hover:bg-churnly-700 transition-colors cursor-pointer text-white shadow-sm"
+          className="h-16 w-14 bg-churnly-600 flex items-center justify-center -mr-6 hover:bg-churnly-700 transition-colors cursor-pointer text-white shadow-sm shrink-0"
           title="Support & Documentation"
         >
           <LifeBuoy className="w-6 h-6" />
