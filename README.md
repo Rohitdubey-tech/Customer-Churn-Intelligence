@@ -196,8 +196,3 @@ Risk levels are configurable from `backend/app/config.py`:
 - **HIGH:** Probability 0.60 – 0.80 (60% – 80%)
 - **CRITICAL:** Probability 0.80 – 1.00 (80% – 100%)
 
----
-
-## 11. License
-
-Licensed under the MIT License.
