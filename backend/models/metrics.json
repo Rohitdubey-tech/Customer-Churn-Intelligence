@@ -1,0 +1,767 @@
+{
+  "model_name": "LightGBM Binary Classifier",
+  "dataset_size": 1500,
+  "train_size": 1200,
+  "test_size": 300,
+  "accuracy": 0.8067,
+  "precision": 0.6,
+  "recall": 0.3231,
+  "f1_score": 0.42,
+  "roc_auc": 0.731,
+  "pr_auc": 0.4942,
+  "confusion_matrix": [
+    [
+      221,
+      14
+    ],
+    [
+      44,
+      21
+    ]
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 0.8339622641509434,
+      "recall": 0.9404255319148936,
+      "f1-score": 0.884,
+      "support": 235.0
+    },
+    "1": {
+      "precision": 0.6,
+      "recall": 0.3230769230769231,
+      "f1-score": 0.42,
+      "support": 65.0
+    },
+    "accuracy": 0.8066666666666666,
+    "macro avg": {
+      "precision": 0.7169811320754718,
+      "recall": 0.6317512274959084,
+      "f1-score": 0.652,
+      "support": 300.0
+    },
+    "weighted avg": {
+      "precision": 0.7832704402515724,
+      "recall": 0.8066666666666666,
+      "f1-score": 0.7834666666666668,
+      "support": 300.0
+    }
+  },
+  "roc_curve": [
+    {
+      "fpr": 0.0,
+      "tpr": 0.0
+    },
+    {
+      "fpr": 0.0,
+      "tpr": 0.0154
+    },
+    {
+      "fpr": 0.0,
+      "tpr": 0.1077
+    },
+    {
+      "fpr": 0.0085,
+      "tpr": 0.1077
+    },
+    {
+      "fpr": 0.0085,
+      "tpr": 0.1538
+    },
+    {
+      "fpr": 0.017,
+      "tpr": 0.1538
+    },
+    {
+      "fpr": 0.017,
+      "tpr": 0.1692
+    },
+    {
+      "fpr": 0.034,
+      "tpr": 0.1692
+    },
+    {
+      "fpr": 0.034,
+      "tpr": 0.2154
+    },
+    {
+      "fpr": 0.0383,
+      "tpr": 0.2154
+    },
+    {
+      "fpr": 0.0383,
+      "tpr": 0.2308
+    },
+    {
+      "fpr": 0.0511,
+      "tpr": 0.2308
+    },
+    {
+      "fpr": 0.0511,
+      "tpr": 0.2769
+    },
+    {
+      "fpr": 0.0553,
+      "tpr": 0.2769
+    },
+    {
+      "fpr": 0.0553,
+      "tpr": 0.3231
+    },
+    {
+      "fpr": 0.0596,
+      "tpr": 0.3231
+    },
+    {
+      "fpr": 0.0596,
+      "tpr": 0.3385
+    },
+    {
+      "fpr": 0.0809,
+      "tpr": 0.3385
+    },
+    {
+      "fpr": 0.0809,
+      "tpr": 0.3538
+    },
+    {
+      "fpr": 0.0936,
+      "tpr": 0.3538
+    },
+    {
+      "fpr": 0.0936,
+      "tpr": 0.3692
+    },
+    {
+      "fpr": 0.0979,
+      "tpr": 0.3692
+    },
+    {
+      "fpr": 0.0979,
+      "tpr": 0.3846
+    },
+    {
+      "fpr": 0.1064,
+      "tpr": 0.3846
+    },
+    {
+      "fpr": 0.1064,
+      "tpr": 0.4
+    },
+    {
+      "fpr": 0.1149,
+      "tpr": 0.4
+    },
+    {
+      "fpr": 0.1149,
+      "tpr": 0.4308
+    },
+    {
+      "fpr": 0.1234,
+      "tpr": 0.4308
+    },
+    {
+      "fpr": 0.1234,
+      "tpr": 0.4462
+    },
+    {
+      "fpr": 0.1787,
+      "tpr": 0.4462
+    },
+    {
+      "fpr": 0.1787,
+      "tpr": 0.4923
+    },
+    {
+      "fpr": 0.1872,
+      "tpr": 0.4923
+    },
+    {
+      "fpr": 0.1872,
+      "tpr": 0.5231
+    },
+    {
+      "fpr": 0.217,
+      "tpr": 0.5231
+    },
+    {
+      "fpr": 0.217,
+      "tpr": 0.5538
+    },
+    {
+      "fpr": 0.234,
+      "tpr": 0.5538
+    },
+    {
+      "fpr": 0.234,
+      "tpr": 0.5692
+    },
+    {
+      "fpr": 0.2383,
+      "tpr": 0.5692
+    },
+    {
+      "fpr": 0.2383,
+      "tpr": 0.5846
+    },
+    {
+      "fpr": 0.3021,
+      "tpr": 0.5846
+    },
+    {
+      "fpr": 0.3021,
+      "tpr": 0.6154
+    },
+    {
+      "fpr": 0.3787,
+      "tpr": 0.6154
+    },
+    {
+      "fpr": 0.3787,
+      "tpr": 0.6308
+    },
+    {
+      "fpr": 0.3957,
+      "tpr": 0.6308
+    },
+    {
+      "fpr": 0.3957,
+      "tpr": 0.6615
+    },
+    {
+      "fpr": 0.4043,
+      "tpr": 0.6615
+    },
+    {
+      "fpr": 0.4043,
+      "tpr": 0.6769
+    },
+    {
+      "fpr": 0.4085,
+      "tpr": 0.6769
+    },
+    {
+      "fpr": 0.4085,
+      "tpr": 0.6923
+    },
+    {
+      "fpr": 0.4128,
+      "tpr": 0.6923
+    },
+    {
+      "fpr": 0.4128,
+      "tpr": 0.7077
+    },
+    {
+      "fpr": 0.4298,
+      "tpr": 0.7077
+    },
+    {
+      "fpr": 0.4298,
+      "tpr": 0.7231
+    },
+    {
+      "fpr": 0.434,
+      "tpr": 0.7231
+    },
+    {
+      "fpr": 0.434,
+      "tpr": 0.7385
+    },
+    {
+      "fpr": 0.4383,
+      "tpr": 0.7385
+    },
+    {
+      "fpr": 0.4383,
+      "tpr": 0.7538
+    },
+    {
+      "fpr": 0.4511,
+      "tpr": 0.7538
+    },
+    {
+      "fpr": 0.4511,
+      "tpr": 0.7692
+    },
+    {
+      "fpr": 0.4638,
+      "tpr": 0.7692
+    },
+    {
+      "fpr": 0.4638,
+      "tpr": 0.7846
+    },
+    {
+      "fpr": 0.4894,
+      "tpr": 0.7846
+    },
+    {
+      "fpr": 0.4894,
+      "tpr": 0.8
+    },
+    {
+      "fpr": 0.5021,
+      "tpr": 0.8
+    },
+    {
+      "fpr": 0.5021,
+      "tpr": 0.8154
+    },
+    {
+      "fpr": 0.5234,
+      "tpr": 0.8154
+    },
+    {
+      "fpr": 0.5234,
+      "tpr": 0.8308
+    },
+    {
+      "fpr": 0.5404,
+      "tpr": 0.8308
+    },
+    {
+      "fpr": 0.5404,
+      "tpr": 0.8462
+    },
+    {
+      "fpr": 0.5574,
+      "tpr": 0.8462
+    },
+    {
+      "fpr": 0.5574,
+      "tpr": 0.8615
+    },
+    {
+      "fpr": 0.5787,
+      "tpr": 0.8615
+    },
+    {
+      "fpr": 0.5787,
+      "tpr": 0.8769
+    },
+    {
+      "fpr": 0.6128,
+      "tpr": 0.8769
+    },
+    {
+      "fpr": 0.6128,
+      "tpr": 0.8923
+    },
+    {
+      "fpr": 0.617,
+      "tpr": 0.8923
+    },
+    {
+      "fpr": 0.617,
+      "tpr": 0.9077
+    },
+    {
+      "fpr": 0.6213,
+      "tpr": 0.9077
+    },
+    {
+      "fpr": 0.6213,
+      "tpr": 0.9231
+    },
+    {
+      "fpr": 0.7362,
+      "tpr": 0.9231
+    },
+    {
+      "fpr": 0.7362,
+      "tpr": 0.9385
+    },
+    {
+      "fpr": 0.7489,
+      "tpr": 0.9385
+    },
+    {
+      "fpr": 0.7489,
+      "tpr": 0.9538
+    },
+    {
+      "fpr": 0.7957,
+      "tpr": 0.9538
+    },
+    {
+      "fpr": 0.7957,
+      "tpr": 0.9692
+    },
+    {
+      "fpr": 0.9149,
+      "tpr": 0.9692
+    },
+    {
+      "fpr": 0.9149,
+      "tpr": 0.9846
+    },
+    {
+      "fpr": 0.9191,
+      "tpr": 0.9846
+    },
+    {
+      "fpr": 0.9191,
+      "tpr": 1.0
+    },
+    {
+      "fpr": 1.0,
+      "tpr": 1.0
+    }
+  ],
+  "pr_curve": [
+    {
+      "recall": 1.0,
+      "precision": 0.2167
+    },
+    {
+      "recall": 1.0,
+      "precision": 0.2211
+    },
+    {
+      "recall": 1.0,
+      "precision": 0.2257
+    },
+    {
+      "recall": 1.0,
+      "precision": 0.2305
+    },
+    {
+      "recall": 0.9692,
+      "precision": 0.2283
+    },
+    {
+      "recall": 0.9692,
+      "precision": 0.2333
+    },
+    {
+      "recall": 0.9692,
+      "precision": 0.2386
+    },
+    {
+      "recall": 0.9692,
+      "precision": 0.2442
+    },
+    {
+      "recall": 0.9692,
+      "precision": 0.25
+    },
+    {
+      "recall": 0.9538,
+      "precision": 0.252
+    },
+    {
+      "recall": 0.9538,
+      "precision": 0.2583
+    },
+    {
+      "recall": 0.9385,
+      "precision": 0.2607
+    },
+    {
+      "recall": 0.9231,
+      "precision": 0.2632
+    },
+    {
+      "recall": 0.9231,
+      "precision": 0.2703
+    },
+    {
+      "recall": 0.9231,
+      "precision": 0.2778
+    },
+    {
+      "recall": 0.9231,
+      "precision": 0.2857
+    },
+    {
+      "recall": 0.9077,
+      "precision": 0.2892
+    },
+    {
+      "recall": 0.8769,
+      "precision": 0.2879
+    },
+    {
+      "recall": 0.8615,
+      "precision": 0.2917
+    },
+    {
+      "recall": 0.8462,
+      "precision": 0.2957
+    },
+    {
+      "recall": 0.8308,
+      "precision": 0.3
+    },
+    {
+      "recall": 0.8154,
+      "precision": 0.3046
+    },
+    {
+      "recall": 0.8,
+      "precision": 0.3095
+    },
+    {
+      "recall": 0.7846,
+      "precision": 0.3148
+    },
+    {
+      "recall": 0.7692,
+      "precision": 0.3205
+    },
+    {
+      "recall": 0.7385,
+      "precision": 0.32
+    },
+    {
+      "recall": 0.7077,
+      "precision": 0.3194
+    },
+    {
+      "recall": 0.6615,
+      "precision": 0.3116
+    },
+    {
+      "recall": 0.6308,
+      "precision": 0.3106
+    },
+    {
+      "recall": 0.6154,
+      "precision": 0.3175
+    },
+    {
+      "recall": 0.6154,
+      "precision": 0.3333
+    },
+    {
+      "recall": 0.6154,
+      "precision": 0.3509
+    },
+    {
+      "recall": 0.5846,
+      "precision": 0.3519
+    },
+    {
+      "recall": 0.5846,
+      "precision": 0.3725
+    },
+    {
+      "recall": 0.5846,
+      "precision": 0.3958
+    },
+    {
+      "recall": 0.5538,
+      "precision": 0.4
+    },
+    {
+      "recall": 0.5231,
+      "precision": 0.4048
+    },
+    {
+      "recall": 0.5231,
+      "precision": 0.4359
+    },
+    {
+      "recall": 0.4615,
+      "precision": 0.4167
+    },
+    {
+      "recall": 0.4462,
+      "precision": 0.4394
+    },
+    {
+      "recall": 0.4462,
+      "precision": 0.4833
+    },
+    {
+      "recall": 0.4154,
+      "precision": 0.5
+    },
+    {
+      "recall": 0.3846,
+      "precision": 0.5208
+    },
+    {
+      "recall": 0.3538,
+      "precision": 0.5476
+    },
+    {
+      "recall": 0.3385,
+      "precision": 0.6111
+    },
+    {
+      "recall": 0.2769,
+      "precision": 0.6
+    },
+    {
+      "recall": 0.2308,
+      "precision": 0.625
+    },
+    {
+      "recall": 0.1692,
+      "precision": 0.6111
+    },
+    {
+      "recall": 0.1538,
+      "precision": 0.8333
+    },
+    {
+      "recall": 0.0923,
+      "precision": 1.0
+    },
+    {
+      "recall": 0.0,
+      "precision": 1.0
+    }
+  ],
+  "feature_importance": [
+    {
+      "feature": "account_health_index",
+      "importance": 537
+    },
+    {
+      "feature": "usage_per_license",
+      "importance": 499
+    },
+    {
+      "feature": "feature_usage_score",
+      "importance": 413
+    },
+    {
+      "feature": "engagement_score",
+      "importance": 388
+    },
+    {
+      "feature": "tenure_months",
+      "importance": 361
+    },
+    {
+      "feature": "charge_per_user",
+      "importance": 354
+    },
+    {
+      "feature": "support_ticket_rate",
+      "importance": 326
+    },
+    {
+      "feature": "total_charges",
+      "importance": 325
+    },
+    {
+      "feature": "monthly_charges",
+      "importance": 319
+    },
+    {
+      "feature": "contract_licenses",
+      "importance": 279
+    },
+    {
+      "feature": "last_login_days_ago",
+      "importance": 274
+    },
+    {
+      "feature": "active_users",
+      "importance": 210
+    },
+    {
+      "feature": "support_tickets_30d",
+      "importance": 176
+    },
+    {
+      "feature": "sla_breaches_90d",
+      "importance": 155
+    },
+    {
+      "feature": "auto_renewal",
+      "importance": 147
+    },
+    {
+      "feature": "contract_type_Month-to-Month",
+      "importance": 138
+    },
+    {
+      "feature": "discount_percentage",
+      "importance": 97
+    },
+    {
+      "feature": "executive_sponsor_present",
+      "importance": 91
+    },
+    {
+      "feature": "nps_score",
+      "importance": 83
+    },
+    {
+      "feature": "industry_Enterprise Tech",
+      "importance": 59
+    },
+    {
+      "feature": "contract_type_2-Year Fixed",
+      "importance": 40
+    },
+    {
+      "feature": "payment_method_ACH Direct Debit",
+      "importance": 32
+    },
+    {
+      "feature": "industry_Financial Services",
+      "importance": 31
+    },
+    {
+      "feature": "industry_Healthcare",
+      "importance": 23
+    },
+    {
+      "feature": "paperless_billing",
+      "importance": 20
+    },
+    {
+      "feature": "payment_method_Credit Card",
+      "importance": 18
+    },
+    {
+      "feature": "contract_type_1-Year Fixed",
+      "importance": 16
+    },
+    {
+      "feature": "industry_Logistics",
+      "importance": 14
+    },
+    {
+      "feature": "payment_method_Auto-Invoice",
+      "importance": 11
+    },
+    {
+      "feature": "customer_segment_Mid-Market",
+      "importance": 9
+    },
+    {
+      "feature": "industry_Manufacturing",
+      "importance": 7
+    },
+    {
+      "feature": "industry_Professional Services",
+      "importance": 5
+    },
+    {
+      "feature": "industry_E-Commerce",
+      "importance": 4
+    },
+    {
+      "feature": "customer_segment_Enterprise",
+      "importance": 1
+    },
+    {
+      "feature": "customer_segment_SMB",
+      "importance": 0
+    },
+    {
+      "feature": "contract_type_3-Year Enterprise",
+      "importance": 0
+    },
+    {
+      "feature": "payment_method_Manual Wire",
+      "importance": 0
+    }
+  ]
+}
