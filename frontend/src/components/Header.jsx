@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ChevronDown, LifeBuoy, Flower2, User, Settings, LogOut, Shield } from 'lucide-react';
+import { Search, ChevronDown, LifeBuoy, Flower2, User, Settings, LogOut, Shield, UploadCloud, Database } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getCustomers } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header({ searchVal, onSearchChange }) {
   const navigate = useNavigate();
+  const { user, isDemo, logout } = useAuth();
 
   // Interactive Search State
   const [internalSearch, setInternalSearch] = useState(searchVal || "");
@@ -12,7 +14,7 @@ export default function Header({ searchVal, onSearchChange }) {
   const [showDropdown, setShowDropdown] = useState(false);
 
   // Dropdown States
-  const [role, setRole] = useState("CSM");
+  const [role, setRole] = useState(user?.role || "CSM");
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -55,6 +57,11 @@ export default function Header({ searchVal, onSearchChange }) {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   const roles = [
     { code: "CSM", label: "CSM (Customer Success)" },
     { code: "AE", label: "Account Executive" },
@@ -75,8 +82,14 @@ export default function Header({ searchVal, onSearchChange }) {
         <span className="text-lg font-extrabold text-churnly-600 tracking-tight">Customer Churn Intelligence</span>
       </div>
 
+      {/* Mode Badge (Demo Data vs Custom Data) */}
+      <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200 text-xs font-mono">
+        <span className={`w-2 h-2 rounded-full ${isDemo ? 'bg-amber-500 animate-pulse' : 'bg-cyan-500'}`}></span>
+        <span className="text-slate-700 font-semibold">{isDemo ? 'DEMO MODE (Sample Data)' : 'CUSTOM WORKSPACE'}</span>
+      </div>
+
       {/* Center Search Input with Instant Dropdown */}
-      <div ref={searchRef} className="flex-1 max-w-xl mx-6 relative">
+      <div ref={searchRef} className="flex-1 max-w-md mx-4 relative">
         <div className="relative">
           <input
             type="text"
@@ -89,7 +102,7 @@ export default function Header({ searchVal, onSearchChange }) {
             onFocus={() => {
               if (searchResults.length > 0) setShowDropdown(true);
             }}
-            placeholder="Search account ID or company name (Press Enter to search)..."
+            placeholder="Search account ID or company name..."
             className="w-full bg-slate-100/80 border border-slate-200 rounded-xl pl-4 pr-10 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-churnly-500 focus:ring-1 focus:ring-churnly-500/50 transition-all font-sans"
           />
           <Search 
@@ -133,7 +146,7 @@ export default function Header({ searchVal, onSearchChange }) {
       </div>
 
       {/* Right Actions & User Profile */}
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-4">
         {/* CSM Role Dropdown Menu */}
         <div ref={roleRef} className="relative">
           <button
@@ -174,26 +187,34 @@ export default function Header({ searchVal, onSearchChange }) {
             onClick={() => setShowUserMenu(!showUserMenu)}
             className="flex items-center gap-2.5 hover:bg-slate-50 p-1.5 rounded-xl transition-colors cursor-pointer text-left"
           >
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-              alt="User avatar"
-              className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-sm"
-            />
+            <div className="w-8 h-8 rounded-full bg-churnly-600 text-white font-bold text-xs flex items-center justify-center border border-churnly-500 shadow-sm">
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+            </div>
             <div className="hidden sm:block">
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-slate-800">Adam Baker</span>
+                <span className="text-xs font-bold text-slate-800">{user?.name || 'User'}</span>
                 <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
               </div>
-              <span className="text-[9px] text-slate-400 font-mono block">ID: 12345678</span>
+              <span className="text-[9px] text-slate-400 font-mono block">{user?.email || 'user@churnintelligence.ai'}</span>
             </div>
           </button>
 
           {showUserMenu && (
-            <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 text-xs space-y-1">
+            <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 text-xs space-y-1">
               <div className="px-3 py-2 border-b border-slate-100">
-                <p className="font-bold text-slate-800">Adam Baker</p>
-                <p className="text-[11px] text-slate-400">adam.baker@churnintelligence.ai</p>
+                <p className="font-bold text-slate-800">{user?.name || 'User'}</p>
+                <p className="text-[11px] text-slate-400 font-mono truncate">{user?.email}</p>
+                <span className="mt-1 inline-block text-[9px] font-bold uppercase font-mono px-2 py-0.5 rounded bg-churnly-50 text-churnly-700 border border-churnly-200">
+                  {isDemo ? 'Demo Mode' : 'Custom Email Workspace'}
+                </span>
               </div>
+              <button
+                onClick={() => { setShowUserMenu(false); navigate('/batch'); }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
+              >
+                <UploadCloud className="w-3.5 h-3.5 text-churnly-600" />
+                <span>Upload Custom Dataset</span>
+              </button>
               <button
                 onClick={() => { setShowUserMenu(false); navigate('/customers'); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
@@ -201,27 +222,13 @@ export default function Header({ searchVal, onSearchChange }) {
                 <User className="w-3.5 h-3.5 text-slate-400" />
                 <span>Account Directory</span>
               </button>
-              <button
-                onClick={() => { setShowUserMenu(false); navigate('/model'); }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
-              >
-                <Shield className="w-3.5 h-3.5 text-slate-400" />
-                <span>Model Metrics</span>
-              </button>
-              <button
-                onClick={() => { setShowUserMenu(false); alert("Preferences saved."); }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors text-left"
-              >
-                <Settings className="w-3.5 h-3.5 text-slate-400" />
-                <span>Preferences</span>
-              </button>
               <div className="pt-1 border-t border-slate-100">
                 <button
-                  onClick={() => { setShowUserMenu(false); alert("Logged out."); }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors text-left font-semibold"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors text-left font-semibold cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5 text-rose-500" />
-                  <span>Log Out</span>
+                  <span>Sign Out</span>
                 </button>
               </div>
             </div>
